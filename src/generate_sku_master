@@ -1,0 +1,190 @@
+import pandas as pd
+import random
+storage_products = [
+    "Clear Plastic Storage Bin",
+    "Stackable Plastic Storage Bin",
+    "Under-Bed Storage Box",
+    "Foldable Fabric Storage Cube",
+    "Large Plastic Storage Box",
+    "File Storage Box",
+
+    "3-Tier Shoe Rack",
+    "5-Tier Shoe Rack",
+    "Hanging Shoe Organizer",
+    "Over-the-Door Organizer",
+    "Velvet Clothes Hangers",
+    "Multi-Tier Clothes Hanger",
+
+    "Spice Rack",
+    "Drawer Organizer",
+    "Clear Pantry Bin",
+    "Food Storage Canister",
+    "Under-Sink Organizer",
+    "Kitchen Storage Rack",
+
+    "Laundry Hamper",
+    "Fabric Storage Basket",
+    "General Storage Basket",
+    "Hanging Organizer",
+    "Bathroom Shower Caddy",
+    "Bathroom Storage Rack",
+
+    "Desktop Organizer",
+    "Magazine Holder",
+    "File Organizer",
+    "Drawer Divider",
+    "Document Storage Box",
+    "Multi-Purpose Storage Basket"
+]
+appliance_products = [
+    "Mixer Grinder",
+    "Induction Cooktop",
+    "Electric Rice Cooker",
+    "Wet Grinder",
+    "Electric Kettle",
+    "Gas Stove ",
+    "Kitchen Chimney",
+    "Microwave Oven",
+    "Sandwich Maker",
+    "Electric Cooker",
+
+    "Ceiling Fan",
+    "Pedestal Fan",
+    "Air Cooler",
+    "Air Conditioner",
+    "Water Heater Geyser",
+
+    "Semi-Automatic Washing Machine",
+    "Fully Automatic Washing Machine",
+    "Direct Cool Refrigerator",
+    "Water Purifier",
+    "Vacuum Cleaner",
+    "Iron",
+    "Inverter",
+    "LED Television",
+    "Hair Dryer",
+    "Grooming Trimmer",
+    "Sound System"
+]
+furniture_products = [
+    "Sofa Set",
+    "Center Table",
+    "TV Unit",
+    "Diwan",
+    "Shoe Cabinet",
+
+    "Double Bed",
+    "Wardrobe",
+    "Dressing Table",
+    "Bedside Table",
+    "Diwan Cot",
+
+    "Dining Table Set",
+    "Crockery Unit",
+    "Kitchen Trolley Unit",
+    "Bar Stool",
+
+    "Study Table",
+    "Office Chair",
+    "Bookshelf",
+    "Computer Table",
+    "Plastic Chair"
+]
+home_decor_products = [
+    "Wall Hanging",
+    "Brass Diya",
+    "Handloom Cushion Cover",
+    "Jute Rug",
+    "Terracotta Planter",
+    "Wooden Wall Shelf",
+    "Glass Flower Vase",
+    "Metal Wall Art",
+    "Cotton Door Curtain",
+    "Pichwai Painting",
+    "Scented Candle",
+    "Beaded Table Runner",
+    "Bamboo Wind Chime",
+    "Marble Coaster Set",
+    "Ethnic Floor Cushion"
+]
+cookware_products = [
+    "Pressure Cooker",
+    "Tawa",
+    "Kadai",
+    "Top",
+    "Fry Pan",
+
+    "Thali",
+    "Katori",
+    "Tumbler",
+    "Hot Case",
+    "Serving Spoon"
+]
+all_products = (
+    storage_products
+    + appliance_products
+    + furniture_products
+    + home_decor_products
+    + cookware_products
+)
+categories = (
+    ["Storage & Organizers"] * len(storage_products)
+    + ["Appliances"] * len(appliance_products)
+    + ["Furniture"] * len(furniture_products)
+    + ["Home Decor"] * len(home_decor_products)
+    + ["Cookware & Tableware"] * len(cookware_products)
+)
+
+sku_ids = []
+
+for i in range(1, len(all_products) + 1):
+    sku_ids.append(f"SKU{i:03d}")
+
+sku_master = pd.DataFrame({
+    "sku_id": sku_ids,
+    "product_name": all_products,
+    "category": categories
+})    
+price_ranges = {
+    "Storage & Organizers": (100, 800),
+    "Appliances": (800, 35000),
+    "Furniture": (1500, 40000),
+    "Home Decor": (100, 3000),
+    "Cookware & Tableware": (150, 3000)
+}
+unit_costs = []
+
+for category in sku_master["category"]:
+    min_cost, max_cost = price_ranges[category]
+    cost = random.randint(min_cost, max_cost)
+    unit_costs.append(cost)
+
+sku_master["unit_cost"] = unit_costs
+
+list_prices = []
+
+for cost in sku_master["unit_cost"]:
+    markup = random.uniform(0.20, 0.60)
+    price = round(cost * (1 + markup))
+    list_prices.append(price)
+
+sku_master["list_price"] = list_prices
+
+start_date = pd.Timestamp("2021-01-01")
+end_date = pd.Timestamp("2025-12-31")
+
+launch_dates = [
+    start_date + pd.Timedelta(
+        days=random.randint(0, (end_date - start_date).days)
+    )
+    for _ in range(len(sku_master))
+]
+sku_master["launch_date"] = launch_dates
+
+
+sku_master.to_csv(
+    "data/processed/sku_master.csv",
+    index=False
+)
+
+print("SKU Master saved successfully.")
