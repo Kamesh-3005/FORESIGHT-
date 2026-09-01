@@ -9,7 +9,7 @@ st.set_page_config(page_title="FORESIGHT", page_icon="🔭", layout="wide")
 # --------------------------------------------------
 # Load project data
 # --------------------------------------------------
-risk_path = "data/processed/risk_scoring.csv"
+risk_path = "..."
 forecast_path = "data/processed/combined_forecast.csv"
 risk_df = pd.read_csv(risk_path)
 forecast_df = pd.read_csv(forecast_path)
