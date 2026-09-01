@@ -61,6 +61,7 @@ Inventory Risk Scoring
 - [Interactive Swagger Documentation](https://foresight-w1p0.onrender.com/docs)
 - [API Health Check](https://foresight-w1p0.onrender.com/health)
 - [Example SKU — SKU079](https://foresight-w1p0.onrender.com/score/SKU079)
+- [Streamlit](https://foresight-dashboard-ethc.onrender.com)
 
 
 ---
